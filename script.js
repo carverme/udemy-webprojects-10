@@ -1,4 +1,4 @@
-const musicContainer = document.getElementByIdI('music_container');
+const musicContainer = document.getElementById('music_container');
 const playBtn = document.getElementById('play');
 const prevBtn = document.getElementById('prev');
 const nextBtn = document.getElementById('next');
@@ -44,11 +44,32 @@ function pauseSong() {
     audio.pause();
 }
 
+// Previous song
+function prevSong() {
+    songIndex--;
+    if(songIndex < 0) {
+        songIndex = songs.length - 1;
+    }
+
+    loadSong(songs[songIndex]);
+
+    playSong();
+}
+// Previous song
+function prevSong() {
+    songIndex++;
+    if(songIndex > songs.length - 2) {
+        songIndex = 0;
+    }
+
+    loadSong(songs[songIndex]);
+
+    playSong();
+}
+
 // Event listeners
 playBtn.addEventListener('click', () => {
-    const isPlaying = musicContainer.classList.contains(
-    'play'
-    );
+    const isPlaying = musicContainer.classList.contains('play');
 
     if(isPlaying) {
         pauseSong();
@@ -56,3 +77,7 @@ playBtn.addEventListener('click', () => {
         playSong();
     }
 });
+
+//Change Song
+prevBtn.addEventListener('click', prevSong);
+nextBtn.addEventListener('click', nextSong);
