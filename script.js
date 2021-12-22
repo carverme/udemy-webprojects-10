@@ -1,3 +1,5 @@
+console.log('hitting on 5500')
+
 const musicContainer = document.getElementById('music_container');
 const playBtn = document.getElementById('play');
 const prevBtn = document.getElementById('prev');
@@ -10,7 +12,7 @@ const title = document.getElementById('title');
 const cover = document.getElementById('cover');
 
 // Song titles
-const songs = ['hey', 'summer', 'ukelele'];
+const songs = ['hey', 'summer', 'ukulele'];
 
 //Keep track of song
 let songIndex = 2;
@@ -55,16 +57,33 @@ function prevSong() {
 
     playSong();
 }
-// Previous song
-function prevSong() {
+// Next song
+function nextSong() {
     songIndex++;
-    if(songIndex > songs.length - 2) {
+    if(songIndex > songs.length - 1) {
         songIndex = 0;
     }
 
     loadSong(songs[songIndex]);
 
     playSong();
+}
+
+//Update progress bars
+function updateProgress(e) {
+    const { duration, currentTime } = e.srcElement;
+    const progressPercent = (currentTime / duration) * 100;
+    progress.style.width = `${progressPercent}%`;
+}
+
+//Set progress bar
+function setProgress() {
+    const width = this.clientWidth;
+    const clickX = e.offsetX;
+    const duration = audio.duration;
+
+    audio.currentTime = (clickX / width) * duration;
+
 }
 
 // Event listeners
@@ -81,3 +100,12 @@ playBtn.addEventListener('click', () => {
 //Change Song
 prevBtn.addEventListener('click', prevSong);
 nextBtn.addEventListener('click', nextSong);
+
+//Time/song update event
+audio.addEventListener('timeupdate', updateProgress);
+
+//Click on progress bar
+progressContainer.addEventListener('click', setProgress);
+
+//Song ends
+audio.addEventListener('ended', nextSong);
